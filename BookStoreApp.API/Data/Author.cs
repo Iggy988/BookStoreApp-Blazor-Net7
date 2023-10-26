@@ -13,5 +13,6 @@ public partial class Author
 
     public string? Bio { get; set; }
 
+    //one to many relation (one author many books)
     public virtual ICollection<Book> Books { get; set; } = new List<Book>();
 }
