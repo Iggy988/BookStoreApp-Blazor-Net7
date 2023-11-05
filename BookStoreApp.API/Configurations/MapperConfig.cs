@@ -2,6 +2,7 @@
 using BookStoreApp.API.Data;
 using BookStoreApp.API.Models.Author;
 using BookStoreApp.API.Models.Book;
+using BookStoreApp.API.Models.User;
 
 namespace BookStoreApp.API.Configurations;
 
@@ -23,5 +24,7 @@ public class MapperConfig : Profile
             .ForMember(q => q.AuthorName,
             d => d.MapFrom(map => $"{map.Author.FirstName} {map.Author.LastName}"))
             .ReverseMap();
+
+        CreateMap<ApiUser, UserDto>().ReverseMap();
     }
 }
