@@ -31,4 +31,9 @@ public class AuthenticationService : IAuthenticationService
         return true;
 
     }
+
+    public async Task Logout()
+    {
+        await((ApiAuthenticationStateProvider)_authenticationStateProvider).LoggedOut();
+    }
 }
