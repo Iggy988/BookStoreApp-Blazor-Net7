@@ -1,6 +1,7 @@
 
 using Blazored.LocalStorage;
 using BookStoreApp.Blazor.Server.UI.Providers;
+using BookStoreApp.Blazor.Server.UI.Services;
 using BookStoreApp.Blazor.Server.UI.Services.Authentication;
 using BookStoreApp.Blazor.Server.UI.Services.Base;
 using Microsoft.AspNetCore.Components;
@@ -17,6 +18,8 @@ builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddHttpClient<IClient, Client>(cl => cl.BaseAddress = new Uri("https://localhost:7049"));
 
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<IAuthorService, AuthorService>();
+
 builder.Services.AddScoped<ApiAuthenticationStateProvider>();
 //kad god injected AuthenticationStateProvider -> moze takodje biti implemented kao custom ApiAuthenticationStateProvider
 builder.Services.AddScoped<AuthenticationStateProvider>(p =>p.GetRequiredService<ApiAuthenticationStateProvider>());

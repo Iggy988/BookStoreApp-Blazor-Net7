@@ -1,8 +1,15 @@
 ﻿@page "/authors/"
-@inject IClient httpClient
+@inject IAuthorService authorService
 
 <h3>Index</h3>
 
+
+@if (response.Success = false)
+{
+    <div class="alert alert-info">
+        <h4>@response.Message</h4>
+    </div>
+}
 
 @if (_model  == null)
 {
@@ -43,9 +50,15 @@ else
 
 @code {
     private List<AuthorReadOnlyDto> _model;
+    private Response<List<AuthorReadOnlyDto>> response = new Response<List<AuthorReadOnlyDto>> { Success = true };
 
     protected override async Task OnInitializedAsync()
     {
-        _model = (await httpClient.AuthorsAllAsync()).ToList();
+        //_model = (await httpClient.AuthorsAllAsync()).ToList();
+        response = await authorService.GetAuthors();
+        if (response.Success)
+        {
+            _model = response.Data;
+        }
     }
 }
