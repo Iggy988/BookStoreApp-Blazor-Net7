@@ -19,11 +19,11 @@
     </div>
     <div class="mb-3">
         <label for="bio">Biography</label>
-        <InputText @bind-Value="Author.FirstName" class="form-control" id="bio" />
+        <InputText @bind-Value="Author.Bio" class="form-control" id="bio" />
         <ValidationMessage For="@(() => Author.Bio)" />
     </div>
 
-    <button class="btn btn-primary">
+    <button class="btn btn-primary" type="submit">
         <span class="oi oi-pencil"></span> Create Author
     </button>
     <button class="btn btn-outline-secondary" @onclick="BackToList">
@@ -32,11 +32,11 @@
 </EditForm>
 
 @code {
-    private AuthorCreateDto Author = new();
+    private AuthorCreateDto Author = new AuthorCreateDto();
 
     private async Task HandleCreateAuthor()
     {
-        var response = authorService.CreateAuthor(Author);
+        var response = await authorService.CreateAuthor(Author);
         if (response.Success)
         {
             BackToList();

@@ -13,16 +13,18 @@ public class AuthorService : BaseHttpService, IAuthorService
 
     public async Task<Response<int>> CreateAuthor(AuthorCreateDto author)
     {
+        Response<int> response = new ();
+
         try
         {
             await GetBearerToken();
             await _client.AuthorsPOSTAsync(author);
         }
-        catch (Exception)
+        catch (ApiException ex)
         {
-
-            throw;
+            response = ConvertApiExceptions<int>(ex);
         }
+        return response;
     }
 
     public async Task<Response<List<AuthorReadOnlyDto>>> GetAuthors()
