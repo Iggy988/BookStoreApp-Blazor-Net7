@@ -1,0 +1,50 @@
+﻿@page "/authors/create"
+@inject IAuthorService authorService
+@inject NavigationManager navManager
+
+<h3>Create</h3>
+
+<EditForm Model="Author" OnValidSubmit="HandleCreateAuthor">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="mb-3">
+        <label for="firstname">First Name</label>
+        <InputText @bind-Value="Author.FirstName" class="form-control" id="firstname" />
+        <ValidationMessage For="@(() => Author.FirstName)" />
+    </div>
+    <div class="mb-3">
+        <label for="lastname">Last Name</label>
+        <InputText @bind-Value="Author.LastName" class="form-control" id="lastname" />
+        <ValidationMessage For="@(() => Author.LastName)" />
+    </div>
+    <div class="mb-3">
+        <label for="bio">Biography</label>
+        <InputText @bind-Value="Author.FirstName" class="form-control" id="bio" />
+        <ValidationMessage For="@(() => Author.Bio)" />
+    </div>
+
+    <button class="btn btn-primary">
+        <span class="oi oi-pencil"></span> Create Author
+    </button>
+    <button class="btn btn-outline-secondary" @onclick="BackToList">
+        <span class="oi oi-arrow-left"></span> Back To List
+    </button>
+</EditForm>
+
+@code {
+    private AuthorCreateDto Author = new();
+
+    private async Task HandleCreateAuthor()
+    {
+        var response = authorService.CreateAuthor(Author);
+        if (response.Success)
+        {
+            BackToList();
+        }
+    }
+
+    private void BackToList()
+    {
+        navManager.NavigateTo("/authors/");
+    }
+}
