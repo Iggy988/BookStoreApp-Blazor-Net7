@@ -59,7 +59,7 @@ public class AuthorService : BaseHttpService, IAuthorService
             var data = await _client.AuthorsGETAsync(id);
             response = new Response<AuthorReadOnlyDto>
             {
-                //Data = data,
+                Data = data,
                 Success = true,
             };
         }
