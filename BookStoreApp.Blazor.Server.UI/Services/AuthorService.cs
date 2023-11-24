@@ -49,15 +49,15 @@ public class AuthorService : BaseHttpService, IAuthorService
         return response;
     }
 
-    public async Task<Response<AuthorReadOnlyDto>> GetAuthor(int id)
+    public async Task<Response<AuthorDetailsDto>> GetAuthor(int id)
     {
-        Response<AuthorReadOnlyDto> response;
+        Response<AuthorDetailsDto> response;
 
         try
         {
             await GetBearerToken();
             var data = await _client.AuthorsGETAsync(id);
-            response = new Response<AuthorReadOnlyDto>
+            response = new Response<AuthorDetailsDto>
             {
                 Data = data,
                 Success = true,
@@ -66,7 +66,7 @@ public class AuthorService : BaseHttpService, IAuthorService
         catch (ApiException ex)
         {
 
-            response = ConvertApiExceptions<AuthorReadOnlyDto>(ex);
+            response = ConvertApiExceptions<AuthorDetailsDto>(ex);
         }
 
         return response;

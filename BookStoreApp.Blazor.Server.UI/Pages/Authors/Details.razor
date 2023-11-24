@@ -23,6 +23,26 @@
             <ValidationMessage For="@(() => Author.Bio)" />
         </div>
     </fieldset>
+    @if (Author.Books == null || Author.Books.Any() == false)
+    {
+        <div class="alert alert-dismissible alert-secondary">
+            No Books for this Author
+        </div>
+    }
+    else
+    {
+        foreach (var book in Author.Books)
+        {
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="@book.Image" alt="@book.Title">
+                <div class="card-body">
+                    <h5 class="card-title">@book.Title</h5>
+                    <p class="card-text">@book.Title - @book.Price.ToString("C")</p>
+                    <a href="#" class="btn btn-primary">View Book</a>
+                </div>
+            </div>
+        }
+    }
     <button class="btn btn-warning" @onclick="GoToEdit">
         <span class="oi oi-pencil"></span> Edit Author
     </button>
@@ -36,7 +56,7 @@
     [Parameter]
     public int id { get; set; }
 
-    private AuthorReadOnlyDto Author = new();
+    private AuthorDetailsDto Author = new();
 
     protected async override Task OnInitializedAsync()
     {
