@@ -17,7 +17,7 @@ public class AuthorService : BaseHttpService, IAuthorService
         _mapper = mapper;
     }
 
-    public async Task<Response<int>> CreateAuthor(AuthorCreateDto author)
+    public async Task<Response<int>> Create(AuthorCreateDto author)
     {
         Response<int> response = new ();
 
@@ -33,7 +33,23 @@ public class AuthorService : BaseHttpService, IAuthorService
         return response;
     }
 
-    public async Task<Response<int>> EditAuthor(int id, AuthorUpdateDto author)
+    public async Task<Response<int>> Delete(int id)
+    {
+        Response<int> response = new();
+
+        try
+        {
+            await GetBearerToken();
+            await _client.AuthorsDELETEAsync(id);
+        }
+        catch (ApiException ex)
+        {
+            response = ConvertApiExceptions<int>(ex);
+        }
+        return response;
+    }
+
+    public async Task<Response<int>> Edit(int id, AuthorUpdateDto author)
     {
         Response<int> response = new();
 
@@ -49,7 +65,7 @@ public class AuthorService : BaseHttpService, IAuthorService
         return response;
     }
 
-    public async Task<Response<AuthorDetailsDto>> GetAuthor(int id)
+    public async Task<Response<AuthorDetailsDto>> Get(int id)
     {
         Response<AuthorDetailsDto> response;
 
@@ -72,7 +88,7 @@ public class AuthorService : BaseHttpService, IAuthorService
         return response;
     }
 
-    public async Task<Response<List<AuthorReadOnlyDto>>> GetAuthors()
+    public async Task<Response<List<AuthorReadOnlyDto>>> Get()
     {
         Response<List<AuthorReadOnlyDto>> response;
 
@@ -95,7 +111,7 @@ public class AuthorService : BaseHttpService, IAuthorService
         return response;
     }
 
-    public async Task<Response<AuthorUpdateDto>> GetAuthorForUpdate(int id)
+    public async Task<Response<AuthorUpdateDto>> GetForUpdate(int id)
     {
         Response<AuthorUpdateDto> response;
 

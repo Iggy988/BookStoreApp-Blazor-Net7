@@ -39,7 +39,7 @@
 
     protected async override Task OnInitializedAsync()
     {
-        var response = await authorService.GetAuthorForUpdate(id);
+        var response = await authorService.GetForUpdate(id);
         if (response.Success)
         {
             Author = response.Data;
@@ -48,7 +48,7 @@
 
     private async Task HandleUpdateAuthor()
     {
-        var response = await authorService.EditAuthor(id, Author);
+        var response = await authorService.Edit(id, Author);
         if (response.Success)
         {
             BackToList();
