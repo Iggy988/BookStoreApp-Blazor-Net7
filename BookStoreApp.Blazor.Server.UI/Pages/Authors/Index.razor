@@ -21,7 +21,9 @@ else
     }
     else
     {
-        <a class="btn btn-dark" href="/authors/create"><span class="oi oi-plus" aria-hidden="true"></span> Create</a>
+        <AuthorizeView Roles="@Roles.Administrator">
+            <a class="btn btn-dark" href="/authors/create"><span class="oi oi-plus" aria-hidden="true"></span> Create</a>
+        </AuthorizeView>
         <br />
         <br />
 
@@ -42,8 +44,11 @@ else
                         <td>@author.LastName</td>
                         <td>
                             <a class="btn btn-primary" href="/authors/details/@author.Id"><span class="oi oi-book" aria-hidden="true"></span> Details</a>
-                            <a class="btn btn-warning" href="/authors/update/@author.Id"><span class="oi oi-pencil" aria-hidden="true"></span> Edit</a>
-                            <button class="btn btn-danger" @onclick="@(()=> Delete(author.Id))"><span class="oi oi-delete" aria-hidden="true"></span> Delete</button>
+                            <AuthorizeView Roles="@Roles.Administrator">
+                                <a class="btn btn-warning" href="/authors/update/@author.Id"><span class="oi oi-pencil" aria-hidden="true"></span> Edit</a>
+                                <button class="btn btn-danger" @onclick="@(()=> Delete(author.Id))"><span class="oi oi-delete" aria-hidden="true"></span> Delete</button>
+                            </AuthorizeView>
+                            
                         </td>
                     </tr>
                 }

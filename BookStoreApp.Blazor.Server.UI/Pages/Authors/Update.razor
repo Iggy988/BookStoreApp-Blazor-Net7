@@ -1,6 +1,7 @@
 ﻿@page "/authors/update/{id:int}"
 @inject IAuthorService authorService
 @inject NavigationManager navManager
+@* @attribute [Authorize(Roles = Roles.Administrator)]  *@
 
 <h3>Edit Author</h3>
 
@@ -26,10 +27,12 @@
     <button class="btn btn-primary" type="submit">
         <span class="oi oi-pencil"></span> Update Author
     </button>
+
     <button class="btn btn-outline-secondary" @onclick="BackToList">
         <span class="oi oi-arrow-left"></span> Back To List
     </button>
 </EditForm>
+
 
 @code {
     [Parameter]
