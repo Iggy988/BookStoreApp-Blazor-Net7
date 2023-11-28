@@ -5,7 +5,7 @@
 <h3>Books</h3>
 <br />
 
-@if (response.Success = false)
+@if (!response.Success)
 {
     <div class="alert alert-info">
         <h4>@response.Message</h4>
@@ -37,7 +37,6 @@ else
                     <th>Action</th>
                 </tr>
             </thead>
-            <br />
             <tbody>
                 @foreach (var book in Books)
                 {

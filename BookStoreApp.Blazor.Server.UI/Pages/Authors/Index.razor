@@ -5,7 +5,7 @@
 <h3>Authors</h3>
 <br />
 
-@if (response.Success = false)
+@if (response.Success == false)
 {
     <div class="alert alert-info">
         <h4>@response.Message</h4>
@@ -35,7 +35,6 @@ else
                     <th>Action</th>
                 </tr>
             </thead>
-            <br />
             <tbody>
                 @foreach (var author in Authors)
                 {
