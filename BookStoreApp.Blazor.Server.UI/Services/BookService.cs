@@ -17,14 +17,14 @@ public class BookService : BaseHttpService, IBookService
         _mapper = mapper;
     }
 
-    public async Task<Response<int>> Create(BookCreateDto author)
+    public async Task<Response<int>> Create(BookCreateDto book)
     {
         Response<int> response = new();
 
         try
         {
             await GetBearerToken();
-            await _client.BooksPOSTAsync(author);
+            await _client.BooksPOSTAsync(book);
         }
         catch (ApiException ex)
         {
@@ -49,14 +49,14 @@ public class BookService : BaseHttpService, IBookService
         return response;
     }
 
-    public async Task<Response<int>> Edit(int id, BookUpdateDto author)
+    public async Task<Response<int>> Edit(int id, BookUpdateDto book)
     {
         Response<int> response = new();
 
         try
         {
             await GetBearerToken();
-            await _client.BooksPUTAsync(id, author);
+            await _client.BooksPUTAsync(id, book);
         }
         catch (ApiException ex)
         {

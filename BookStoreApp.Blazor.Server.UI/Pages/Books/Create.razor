@@ -25,19 +25,25 @@
     </div>
     <br />
     <div class="mb-3">
+        <label for="price">Year</label>
+        <InputNumber @bind-Value="Book.Year" class="form-control" id="year" />
+    </div>
+    <br />
+    <div class="mb-3">
         <label for="summary">Summary</label>
         <InputText @bind-Value="Book.Summary" class="form-control" id="summary" />
     </div>
     <br />
     <div class="mb-3">
-        <label for="summary">Summary</label>
-        <InputSelect @bind-Value="Book.AuthorId" class="form-control" id="author">
+        <label for="author">Author</label>
+        <InputSelect @bind-Value="Book.AuthorId" class="form-select" id="author">
             <option value="">-- Select Author --</option>
             @foreach (var author in Authors)
             {
                 <option value="@author.Id">@author.FirstName @author.LastName</option>
             }
         </InputSelect>
+        <ValidationMessage For="@(() => Book.AuthorId)" />
     </div>
     <br />
     <div class="mb-3">
@@ -76,7 +82,11 @@
 
     private async Task HandleBookCreate()
     {
-
+        var response = await bookService.Create(Book);
+        if (response.Success)
+        {
+            BackToList();
+        }
     }
     private async Task HandleFileSelection(InputFileChangeEventArgs e)
     {
@@ -91,7 +101,8 @@
                 string imageType = file.ContentType;
                 string base64String = Convert.ToBase64String(byteArray);
 
-                Book.Image = base64String;
+                Book.ImageData = base64String;
+                Book.OriginalImageName = file.Name;
                 img = $"data:{imageType}; base64, {base64String}";
             }
             else
