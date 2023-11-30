@@ -46,7 +46,7 @@ else
                         </td>
                         <td>@book.Title</td>
                         <td>@book.Price.ToString("C")</td>
-                        <td>@book.AuthorName</td>
+                        <td><a class="btn btn-link" href="/authors/details/@book.AuthorId">@book.AuthorName</a></td>
                         <td>
                             <a class="btn btn-primary" href="/books/details/@book.Id"><span class="oi oi-book" aria-hidden="true"></span> Details</a>
                             <AuthorizeView Roles="@Roles.Administrator">
