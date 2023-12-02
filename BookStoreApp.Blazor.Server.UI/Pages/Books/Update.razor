@@ -81,6 +81,7 @@
 
     private string UploadFileWarning = string.Empty;
     private string img = string.Empty;
+    private long maxFileSize = 1024 * 1024 * 5;
 
     protected override async Task OnInitializedAsync()
     {
@@ -103,22 +104,27 @@
         var file = e.File;
         if (file != null)
         {
-            var ext = System.IO.Path.GetExtension(file.Name);
-            if (ext.ToLower().Contains("jpg") || ext.ToLower().Contains("png") || ext.ToLower().Contains("jpeg"))
+            if (file.Size > maxFileSize)
             {
-                var byteArray = new byte[file.Size];
-                await file.OpenReadStream().ReadAsync(byteArray);
-                string imageType = file.ContentType;
-                string base64String = Convert.ToBase64String(byteArray);
-
-                Book.ImageData = base64String;
-                Book.OriginalImageName = file.Name;
-                img = $"data:{imageType}; base64, {base64String}";
+                UploadFileWarning = "This file is too big for upload";
+                return;
             }
-            else
+
+            var ext = System.IO.Path.GetExtension(file.Name);
+            if ((ext.ToLower().Contains("jpg") || ext.ToLower().Contains("png") || ext.ToLower().Contains("jpeg")) == false)
             {
                 UploadFileWarning = "Please select a valid image file (*.jpg | *.png)";
+                return;
             }
+
+            var byteArray = new byte[file.Size];
+            await file.OpenReadStream().ReadAsync(byteArray);
+            string imageType = file.ContentType;
+            string base64String = Convert.ToBase64String(byteArray);
+
+            Book.ImageData = base64String;
+            Book.OriginalImageName = file.Name;
+            img = $"data:{imageType}; base64, {base64String}";
         }
     }
 
