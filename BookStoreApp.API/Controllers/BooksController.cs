@@ -11,6 +11,7 @@ using BookStoreApp.API.Models.Book;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Newtonsoft.Json.Linq;
 
 namespace BookStoreApp.API.Controllers
 {
@@ -88,7 +89,7 @@ namespace BookStoreApp.API.Controllers
 
             if (string.IsNullOrEmpty(bookDto.ImageData) == false)
             {
-                book.Image = CreateFile(bookDto.ImageData, bookDto.OriginalImageName);
+                bookDto.Image = CreateFile(bookDto.ImageData, bookDto.OriginalImageName);
 
                 var picName = Path.GetFileName(book.Image);
                 var path = $"{_webHostEnvironment.WebRootPath}\\bookcoverimages\\{picName}";
@@ -128,10 +129,10 @@ namespace BookStoreApp.API.Controllers
         [Authorize(Roles = "Administartor")]
         public async Task<ActionResult<BookCreateDto>> PostBook(BookCreateDto bookDto)
         {
-          if (_context.Books == null)
-          {
-              return Problem("Entity set 'BookStoreDbContext.Books'  is null.");
-          }
+          //if (_context.Books == null)
+          //{
+          //    return Problem("Entity set 'BookStoreDbContext.Books'  is null.");
+          //}
 
             var book = _mapper.Map<Book>(bookDto);
             book.Image = CreateFile(bookDto.ImageData, bookDto.OriginalImageName);
@@ -187,3 +188,4 @@ namespace BookStoreApp.API.Controllers
         }
     }
 }
+
