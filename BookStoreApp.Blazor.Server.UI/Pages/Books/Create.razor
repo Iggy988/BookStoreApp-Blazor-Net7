@@ -25,7 +25,7 @@
     </div>
     <br />
     <div class="mb-3">
-        <label for="price">Year</label>
+        <label for="year">Year</label>
         <InputNumber @bind-Value="Book.Year" class="form-control" id="year" />
     </div>
     <br />
@@ -87,6 +87,10 @@
         if (response.Success)
         {
             BackToList();
+        }
+        else
+        {
+            Console.WriteLine(response.Message);
         }
     }
     private async Task HandleFileSelection(InputFileChangeEventArgs e)
