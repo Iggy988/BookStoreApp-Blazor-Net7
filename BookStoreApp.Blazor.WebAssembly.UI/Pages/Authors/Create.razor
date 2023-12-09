@@ -1,6 +1,4 @@
 ﻿@page "/authors/create"
-@using Microsoft.AspNetCore.Authorization
-
 @inject IAuthorService authorService
 @inject NavigationManager navManager
 @attribute [Authorize(Roles = Roles.Administrator)]

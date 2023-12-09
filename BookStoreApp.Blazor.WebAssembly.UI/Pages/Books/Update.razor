@@ -1,4 +1,5 @@
 ﻿@page "/books/update/{id:int}"
+@using Microsoft.AspNetCore.Authorization
 @attribute [Authorize(Roles = Roles.Administrator)]
 @inject IBookService bookService
 @inject NavigationManager navManager
