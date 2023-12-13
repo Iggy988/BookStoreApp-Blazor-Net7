@@ -11,7 +11,7 @@ public class BooksRepository : GenericRepository<Book>, IBooksRepository
     private readonly BookStoreDbContext _context;
     private readonly IMapper _mapper;
 
-    public BooksRepository(BookStoreDbContext context, IMapper mapper) : base(context)
+    public BooksRepository(BookStoreDbContext context, IMapper mapper) : base(context, mapper)
     {
         _context = context;
         _mapper = mapper;

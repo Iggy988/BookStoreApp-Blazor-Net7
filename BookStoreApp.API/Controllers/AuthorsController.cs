@@ -12,6 +12,7 @@ using BookStoreApp.API.Static;
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper.QueryableExtensions;
 using BookStoreApp.API.Repositories;
+using BookStoreApp.API.Models;
 
 namespace BookStoreApp.API.Controllers
 {
@@ -34,9 +35,10 @@ namespace BookStoreApp.API.Controllers
             _logger = logger;
         }
 
-        // GET: api/Authors
+        // GET: api/Authors/?startindex=0&pagesize=15
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AuthorReadOnlyDto>>> GetAuthors()
+        //public async Task<ActionResult<IEnumerable<AuthorReadOnlyDto>>> GetAuthors()
+        public async Task<ActionResult<VirtualizeResponse<AuthorReadOnlyDto>>> GetAuthors([FromQuery]QueryParameters queryParameters)
         {
             //if (_context.Authors == null)
             //{
@@ -45,9 +47,11 @@ namespace BookStoreApp.API.Controllers
 
             try
             {
-                var authors = await _authorsRepository.GetAllAsync();
-                var authorDto = _mapper.Map<IEnumerable<AuthorReadOnlyDto>>(authors);
-                return Ok(authorDto);
+                //var authors = await _authorsRepository.GetAllAsync();
+                //var authorsDto = await _authorsRepository.GetAllAsync<AuthorReadOnlyDto>(queryParameters);
+                //var authorDto = _mapper.Map<IEnumerable<AuthorReadOnlyDto>>(authors);
+                //return Ok(authorsDto);
+                return await _authorsRepository.GetAllAsync<AuthorReadOnlyDto>(queryParameters);
             }
             catch (Exception ex)
             {
@@ -55,6 +59,24 @@ namespace BookStoreApp.API.Controllers
                 return StatusCode(500, Messages.Error500Message);
             }
         }
+
+        // GET: api/Authors/GetAll
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<List<AuthorReadOnlyDto>>> GetAuthors()
+        {
+            try
+            {
+                var authors = await _authorsRepository.GetAllAsync();
+                var authorDtos = _mapper.Map<IEnumerable<AuthorReadOnlyDto>>(authors);
+                return Ok(authorDtos);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error Performing GET in {nameof(GetAuthors)}");
+                return StatusCode(500, Messages.Error500Message);
+            }
+        }
+
 
         // GET: api/Authors/5
         [HttpGet("{id}")]

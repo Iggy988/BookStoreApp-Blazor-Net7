@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Blazored.LocalStorage;
+using BookStoreApp.Blazor.Server.UI.Models;
 using BookStoreApp.Blazor.Server.UI.Services.Base;
 
 namespace BookStoreApp.Blazor.Server.UI.Services;
@@ -72,7 +73,7 @@ public class AuthorService : BaseHttpService, IAuthorService
         try
         {
             await GetBearerToken();
-            var data = await _client.AuthorsGETAsync(id);
+            var data = await _client.AuthorsGET2Async(id);
             response = new Response<AuthorDetailsDto>
             {
                 Data = data,
@@ -95,19 +96,38 @@ public class AuthorService : BaseHttpService, IAuthorService
         try
         {
             await GetBearerToken();
-            var data = await _client.AuthorsAllAsync();
+            var data = await _client.GetAllAsync();
             response = new Response<List<AuthorReadOnlyDto>>
             {
                 Data = data.ToList(),
+                Success = true
+            };
+        }
+        catch (ApiException exception)
+        {
+            response = ConvertApiExceptions<List<AuthorReadOnlyDto>>(exception);
+        }
+
+        return response;
+    }
+
+    public async Task<Response<AuthorReadOnlyDtoVirtualizeResponse>> Get(QueryParameters queryParameters)
+    {
+        Response<AuthorReadOnlyDtoVirtualizeResponse> response;
+        try
+        {
+            await GetBearerToken();
+            var data = await _client.AuthorsGETAsync(queryParameters.StartIndex, queryParameters.PageSize);
+            response = new Response<AuthorReadOnlyDtoVirtualizeResponse>
+            {
+                Data = data,
                 Success = true,
             };
         }
         catch (ApiException ex)
         {
-
-            response = ConvertApiExceptions<List<AuthorReadOnlyDto>>(ex);
+            response = ConvertApiExceptions<AuthorReadOnlyDtoVirtualizeResponse>(ex);
         }
-
         return response;
     }
 
@@ -118,7 +138,7 @@ public class AuthorService : BaseHttpService, IAuthorService
         try
         {
             await GetBearerToken();
-            var data = await _client.AuthorsGETAsync(id);
+            var data = await _client.AuthorsGET2Async(id);
             response = new Response<AuthorUpdateDto>
             {
                 Data = _mapper.Map<AuthorUpdateDto>(data),
