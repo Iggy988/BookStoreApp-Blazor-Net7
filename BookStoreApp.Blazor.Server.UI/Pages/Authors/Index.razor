@@ -1,4 +1,5 @@
 ﻿@page "/authors/"
+@using BookStoreApp.Blazor.Server.UI.Models
 @inject IAuthorService authorService
 @inject IJSRuntime js
 
@@ -25,9 +26,10 @@ else
             <a class="btn btn-dark" href="/authors/create"><span class="oi oi-plus" aria-hidden="true"></span> Create</a>
         </AuthorizeView>
         <br />
-        <br />
+        <AuthorTable Authors="Authors" TotalSize="TotalSize" OnScroll="LoadAuthors"  />
+        
 
-        <table class="table table-responsive">
+        @* <table class="table table-responsive">
             <thead>
                 <tr>
                     <th>First Name</th>
@@ -52,25 +54,38 @@ else
                     </tr>
                 }
             </tbody>
-        </table>
+        </table> *@
     }
 }
 
 
-
-
 @code {
     private List<AuthorReadOnlyDto> Authors;
-    private Response<List<AuthorReadOnlyDto>> response = new Response<List<AuthorReadOnlyDto>> { Success = true };
+    public int TotalSize{ get; set; }
+    private Response<AuthorReadOnlyDtoVirtualizeResponse> response = new Response<AuthorReadOnlyDtoVirtualizeResponse> { Success = true };
 
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     //_model = (await httpClient.AuthorsAllAsync()).ToList();
+    //     response = await authorService.Get();
+    //     if (response.Success)
+    //     {
+    //         Authors = response.Data;
+    //     }
+    // }
     protected override async Task OnInitializedAsync()
     {
-        //_model = (await httpClient.AuthorsAllAsync()).ToList();
-        response = await authorService.Get();
+        response = await authorService.Get(new QueryParameters { StartIndex = 0 });
         if (response.Success)
         {
-            Authors = response.Data;
+            Authors = response.Data.Items.ToList();
         }
+    }
+    private async Task LoadAuthors(QueryParameters queryParams)
+    {
+        var virtualizeResult = await authorService.Get(queryParams);
+        Authors = virtualizeResult.Data.Items.ToList();
+        TotalSize = virtualizeResult.Data.TotalSize;
     }
 
     private async Task Delete(int authorId)
